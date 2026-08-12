@@ -1,0 +1,76 @@
+"use client";
+
+import { FormEvent, useMemo, useState } from "react";
+import "./hero.css";
+import "./book-covers.css";
+import "./navigation.css";
+
+type Book = { title: string; author: string; subject: string; cover: string; color: string };
+
+const books: Book[] = [
+  { title: "The Hobbit", author: "J.R.R. Tolkien", subject: "Adventure", cover: "OL27448W", color: "#f4be59" },
+  { title: "A Wrinkle in Time", author: "Madeleine L'Engle", subject: "Fantasy", cover: "OL256077W", color: "#bfc8f6" },
+  { title: "The Secret Garden", author: "Frances Hodgson Burnett", subject: "Classics", cover: "OL468431W", color: "#9acaa7" },
+  { title: "Anne of Green Gables", author: "L.M. Montgomery", subject: "Classics", cover: "OL953666W", color: "#ee9c9d" },
+  { title: "The Mysterious Island", author: "Jules Verne", subject: "Mystery", cover: "OL151121W", color: "#98c7dd" },
+  { title: "Little Women", author: "Louisa May Alcott", subject: "Classics", cover: "OL151987W", color: "#d8b8f0" },
+];
+
+const genres = ["Adventure", "Fantasy", "Mystery", "Classics", "Science", "History"];
+
+function Logo() { return <a className="logo" href="#top" aria-label="PagePort home"><span className="logo-mark">P</span><span>page<span>port</span></span></a>; }
+
+export default function Home() {
+  const [query, setQuery] = useState("");
+  const [notice, setNotice] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const results = useMemo(() => books.filter((book) => `${book.title} ${book.author} ${book.subject}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  function search(event: FormEvent) { event.preventDefault(); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }
+  const say = (message: string) => { setNotice(message); setTimeout(() => setNotice(""), 3500); };
+
+  return <main id="top">
+    <header className="site-header">
+      <div className="nav wrap">
+        <Logo />
+        <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Main navigation"><a onClick={() => setMenuOpen(false)} href="#discover">Discover</a><a onClick={() => setMenuOpen(false)} href="#how-it-works">How it works</a><a onClick={() => setMenuOpen(false)} href="#about">About us</a><a className="mobile-safety" onClick={() => setMenuOpen(false)} href="#about">Safety &amp; privacy</a></nav>
+        <div className="nav-actions"><button className="login" onClick={() => say("Sign in will be available once Supabase Auth is connected.")}>Sign in</button><button className="join" onClick={() => say("Your free PagePort account is ready to create.")}>Join free <span>→</span></button><button className="menu-toggle" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><i/><i/><i/></button></div>
+      </div>
+    </header>
+
+    <section className="hero wrap">
+      <div className="hero-copy">
+        <p className="eyebrow">THE LIBRARY IS OPEN</p>
+        <h1>A thousand worlds,<br /><em>one</em> library card.</h1>
+        <p className="intro">Find a story that feels made for you. PagePort is a bright, safe place to read, explore, and grow your imagination.</p>
+        <form className="search" onSubmit={search} role="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by title, author or topic" aria-label="Search library"/><button type="submit">Search</button></form>
+        <div className="trust"><span className="shield">✓</span><span><b>A safe space to explore.</b><br />Made for curious readers, 12 and up.</span></div>
+      </div>
+      <div className="hero-art library-scene" aria-hidden="true">
+        <div className="window"><i className="moon"/><i className="window-star star-a">✦</i><i className="window-star star-b">·</i></div>
+        <div className="lamp"><i className="shade"/><i className="stem"/><i className="lamp-base"/></div>
+        <div className="shelf">
+          <div className="shelf-row shelf-top"><i className="book b1"/><i className="book b2"/><i className="book b3"/><i className="book b4"/><i className="book b5"/><i className="book b6"/><i className="book b7"/><i className="book b8"/><i className="vase">✦</i></div>
+          <div className="shelf-row shelf-bottom"><i className="book b9"/><i className="book b10"/><i className="book b11"/><i className="book b12"/><i className="book b13"/><i className="book b14"/><i className="book b15"/><i className="book b16"/><i className="globe">◒</i></div>
+        </div>
+        <div className="reading-chair"><i className="cushion"/><i className="leg leg-one"/><i className="leg leg-two"/></div>
+        <div className="floor-plant"><i/><i/><i/><b/></div>
+        <span className="scene-spark">✦</span>
+      </div>
+    </section>
+
+    <section className="genres"><div className="wrap"><p className="eyebrow">START EXPLORING</p><div className="genre-row">{genres.map((genre, index) => <button onClick={() => { setQuery(genre); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }} className={`genre g${index}`} key={genre}><span>{["⛰", "☄", "⌁", "♜", "⚗", "⌛"][index]}</span>{genre}</button>)}</div></div></section>
+
+    <section className="discover wrap" id="discover">
+      <div className="section-title"><div><p className="eyebrow">CURATED FOR YOU</p><h2>Stories worth getting lost in.</h2></div><button className="text-link" onClick={() => setQuery("")}>See all books →</button></div>
+      <div className="book-grid">{results.map((book, index) => <article className="book" key={book.title}><div className={`cover cover-${index + 1}`} style={{ background: book.color }}><div className="cover-design"><span className="cover-kicker">{book.subject}</span><span className="cover-ornament" aria-hidden="true">{["⌂", "✦", "❀", "⌁", "◒", "✺"][index]}</span><strong>{book.title}</strong><small>{book.author}</small></div><span className="tag">{book.subject}</span></div><h3>{book.title}</h3><p>{book.author}</p><button onClick={() => say(`“${book.title}” has been saved to your reading list.`)}>+ Save to list</button></article>)}</div>
+      {results.length === 0 && <p className="empty">No matching titles yet. Try another word or browse a genre above.</p>}
+    </section>
+
+    <section className="steps" id="how-it-works"><div className="wrap steps-inner"><div><p className="eyebrow">SIMPLE BY DESIGN</p><h2>Your next chapter is<br />three steps away.</h2><a href="#discover">Find your book →</a></div><ol><li><span>01</span><div><b>Choose your world</b><p>Browse hand-picked stories by mood, genre, or a favorite author.</p></div></li><li><span>02</span><div><b>Borrow with a click</b><p>Create a free account and add books to your personal shelf.</p></div></li><li><span>03</span><div><b>Read at your pace</b><p>Pick up where you left off, anytime and on any device.</p></div></li></ol></div></section>
+
+    <section className="newsletter wrap" id="about"><div><p className="eyebrow">A NOTE FROM THE SHELVES</p><h2>Good stories are<br />better <em>shared.</em></h2></div><form onSubmit={(e) => { e.preventDefault(); say("You’re on the list — welcome to PagePort!"); }}><label htmlFor="email">Monthly reads, zero clutter.</label><div><input id="email" type="email" required placeholder="Your email address"/><button>Sign me up →</button></div><small>By subscribing, you agree to our friendly privacy policy.</small></form></section>
+
+    <footer><div className="wrap footer-top"><div className="footer-intro"><Logo /><p>A digital library for the<br />next generation of readers.</p><div className="socials" aria-label="Social media"><a href="#top" aria-label="Instagram">◎</a><a href="#top" aria-label="TikTok">♪</a><a href="#top" aria-label="YouTube">▶</a></div></div><div className="footer-links"><div><b>Explore</b><a href="#discover">Discover books</a><a href="#how-it-works">How it works</a><a href="#discover">Popular genres</a></div><div><b>PagePort</b><a href="#about">Our story</a><a href="#about">For families</a><a href="#about">Contact us</a></div><div><b>Help &amp; safety</b><a href="#about">Privacy &amp; safety</a><a href="#about">Community rules</a><a href="#about">Accessibility</a></div></div></div><div className="wrap footer-bottom"><span>© 2026 PagePort Library. Made for curious minds.</span><span>Privacy &amp; Safety &nbsp;&nbsp; Terms of use</span></div></footer>
+    {notice && <div className="toast" role="status">{notice}</div>}
+  </main>;
+}
