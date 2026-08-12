@@ -1,0 +1,2 @@
+import "../info.css";
+export default function Safety(){return <main className="info-page"><a href="/" className="back">← Back to Mayu&apos;s Library</a><section><p className="eyebrow">SAFETY &amp; PRIVACY</p><h1>A library built<br/><em>with care.</em></h1><p>We collect only what is needed for your account and reading shelf. Mayu&apos;s Library does not offer public messaging or profiles, and account data is protected by Supabase Row Level Security.</p><a className="info-button" href="/">Return home →</a></section></main>}

@@ -1,0 +1,16 @@
+/* Comfortable desktop reading widths and legible default text sizes. */
+.wrap{width:min(1320px,calc(100% - 56px))}
+nav a,.login{font-size:16px}
+.join,.search button,.newsletter button{font-size:15px}
+.eyebrow{font-size:12px}
+.intro{max-width:550px;font-size:19px;line-height:1.65}
+.search input{font-size:16px}
+.filters select,.recent{font-size:13px;padding-top:9px;padding-bottom:9px}
+.trust{font-size:14px;line-height:1.5}
+.genre{font-size:15px}.book h3{font-size:17px}.book p{font-size:14px}.book button{font-size:13px}
+.section-title h2,.steps h2,.newsletter h2{font-size:clamp(39px,4vw,54px)}
+.footer-links a,.footer-links b,.footer-top p{font-size:14px}.footer-bottom{font-size:11px}
+.reader-size{width:37px;height:37px;border:1px solid #d6d0c3;background:#fffdf7;color:var(--olive);border-radius:50%;font:700 13px 'DM Sans';cursor:pointer}.reader-size:hover,.reader-size.active{background:var(--olive);border-color:var(--olive);color:#fff}
+.large-text .intro{font-size:22px}.large-text nav a,.large-text .login{font-size:18px}.large-text .filters select,.large-text .recent{font-size:15px}.large-text .trust{font-size:16px}.large-text .book h3{font-size:19px}.large-text .book p{font-size:16px}.large-text .book button{font-size:15px}.large-text .footer-links a,.large-text .footer-top p{font-size:16px}
+@media(max-width:800px){.wrap{width:min(100% - 40px,1320px)}.reader-size{display:none}.intro{font-size:18px}.filters select,.recent{font-size:12px}.trust{font-size:13px}}
+@media(max-width:480px){.wrap{width:calc(100% - 30px)}.intro{font-size:17px}.genre{font-size:14px}.book h3{font-size:16px}}

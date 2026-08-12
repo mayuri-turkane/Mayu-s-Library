@@ -1,0 +1,2 @@
+import "../info.css";
+export default function HowItWorks(){return <main className="info-page"><a href="/" className="back">← Back to Mayu&apos;s Library</a><section><p className="eyebrow">HOW IT WORKS</p><h1>Find. Save.<br/><em>Read.</em></h1><p>Search our hand-picked collection, use filters to narrow your choices, and save books to your personal shelf. Make a free account to keep your reading list with you.</p><a className="info-button" href="/#discover">Explore books →</a></section></main>}
