@@ -9,7 +9,21 @@ export const metadata: Metadata = {
 export default function SafetyPage() {
   return (
     <main style={{ maxWidth: "860px", margin: "auto", padding: "100px 24px 80px", fontFamily: "DM Sans, sans-serif" }}>
-      <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#396747", fontSize: "13px", fontWeight: 600, textDecoration: "none", marginBottom: "48px", display: "block" }}>← Back to Mayu&apos;s Library</Link>
+<Link
+  href="/"
+  style={{
+    display: "block",
+    alignItems: "center",
+    gap: "6px",
+    color: "#396747",
+    fontSize: "13px",
+    fontWeight: 600,
+    textDecoration: "none",
+    marginBottom: "48px",
+}}
+>
+  ← Back to Mayu&apos;s Library
+</Link>
 
       <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#456841" }}>YOUR SAFETY MATTERS</span>
       <h1 style={{ fontFamily: "Playfair Display, Georgia, serif", fontSize: "clamp(40px, 5vw, 64px)", lineHeight: 1.0, letterSpacing: "-0.05em", margin: "14px 0 18px" }}>A safe space<br /><em style={{ color: "#ec664b" }}>for every reader.</em></h1>
