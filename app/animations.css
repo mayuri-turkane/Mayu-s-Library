@@ -1,0 +1,36 @@
+/* Extra shadow depth once scrolled (adds to existing navigation.css blur/border) */
+.site-header.scrolled {
+  box-shadow: 0 6px 20px rgba(27, 37, 32, 0.08);
+}
+
+/* "Join free" arrow slides on hover */
+.site-header .join span {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.site-header .join:hover span {
+  transform: translateX(4px);
+}
+
+/* Search button subtle lift on hover */
+.hero .search button {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hero .search button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Filter dropdown focus state */
+.filters select:focus,
+.filters .recent:focus {
+  outline: none;
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(236, 102, 75, 0.12);
+}
+
+/* Search bar focus glow */
+.search:focus-within {
+  box-shadow: 0 4px 18px rgba(69, 104, 65, 0.14);
+  border-color: var(--olive);
+}

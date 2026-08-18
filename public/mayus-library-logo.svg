@@ -1,0 +1,116 @@
+<svg width="570" height="150" viewBox="70 110 570 150" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Mayu's Library Logo</title>
+  <desc>A warm illustrated logo featuring an open book with a glowing page, stacked books, a small spark, and the text Mayu's Library in serif and sans-serif type.</desc>
+
+  <defs>
+    <style>
+      .logo-title { font-family: Georgia, 'Times New Roman', serif; font-size: 42px; font-weight: 700; fill: #1b2520; letter-spacing: -1.5px; }
+      .logo-sub   { font-family: Arial, sans-serif; font-size: 14px; font-weight: 500; fill: #456841; letter-spacing: 3px; }
+      .logo-tag   { font-family: Arial, sans-serif; font-size: 11px; fill: #73766f; letter-spacing: 1px; }
+
+      .fade-in-1 { animation: fadeUp 0.6s ease both; animation-delay: 0.1s; }
+      .fade-in-2 { animation: fadeUp 0.6s ease both; animation-delay: 0.3s; }
+      .fade-in-3 { animation: fadeUp 0.6s ease both; animation-delay: 0.5s; }
+      .fade-in-4 { animation: fadeUp 0.6s ease both; animation-delay: 0.7s; }
+      .fade-in-5 { animation: fadeUp 0.6s ease both; animation-delay: 0.85s; }
+      .fade-in-6 { animation: fadeUp 0.6s ease both; animation-delay: 1.0s; }
+
+      .glow-pulse       { animation: glowPulse 2.8s ease-in-out infinite; animation-delay: 1.2s; }
+      .spark-twinkle    { animation: twinkle 2.2s ease-in-out infinite; animation-delay: 1.5s; }
+      .spark-twinkle-b  { animation: twinkle 2.8s ease-in-out infinite; animation-delay: 2.0s; }
+      .page-shimmer     { animation: pageShimmer 3s ease-in-out infinite; animation-delay: 1.4s; }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes glowPulse {
+        0%, 100% { opacity: 0.55; }
+        50%       { opacity: 1; }
+      }
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50%       { opacity: 1;   transform: scale(1.2); }
+      }
+      @keyframes pageShimmer {
+        0%, 100% { opacity: 0.18; }
+        50%       { opacity: 0.38; }
+      }
+    </style>
+
+    <!-- cream background -->
+    <rect width="680" height="320" fill="#fbf9f2"/>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="320" fill="#fbf9f2"/>
+
+  <!-- Glow behind book -->
+  <ellipse class="glow-pulse" cx="200" cy="190" rx="88" ry="52" fill="#f5c86a" opacity="0.55"/>
+
+  <!-- Open book base -->
+  <g class="fade-in-1">
+    <!-- Left page -->
+    <path d="M118 148 Q155 138 198 148 L198 232 Q155 220 118 232 Z" fill="#fffdf4" stroke="#d8c9a0" stroke-width="1"/>
+    <!-- Right page -->
+    <path d="M202 148 Q245 138 282 148 L282 232 Q245 220 202 232 Z" fill="#fdf8ec" stroke="#d8c9a0" stroke-width="1"/>
+    <!-- Spine -->
+    <rect x="197" y="148" width="5" height="84" fill="#c8b880" opacity="0.5" rx="1"/>
+    <!-- Left page lines -->
+    <line x1="128" y1="168" x2="190" y2="165" stroke="#d4c89a" stroke-width="1" opacity="0.7"/>
+    <line x1="128" y1="178" x2="190" y2="175" stroke="#d4c89a" stroke-width="1" opacity="0.7"/>
+    <line x1="128" y1="188" x2="190" y2="185" stroke="#d4c89a" stroke-width="1" opacity="0.5"/>
+    <line x1="128" y1="198" x2="190" y2="195" stroke="#d4c89a" stroke-width="1" opacity="0.5"/>
+    <line x1="128" y1="208" x2="178" y2="205" stroke="#d4c89a" stroke-width="1" opacity="0.3"/>
+    <!-- Right page lines -->
+    <line x1="210" y1="165" x2="272" y2="168" stroke="#d4c89a" stroke-width="1" opacity="0.7"/>
+    <line x1="210" y1="175" x2="272" y2="178" stroke="#d4c89a" stroke-width="1" opacity="0.7"/>
+    <line x1="210" y1="185" x2="272" y2="188" stroke="#d4c89a" stroke-width="1" opacity="0.5"/>
+    <line x1="210" y1="195" x2="272" y2="198" stroke="#d4c89a" stroke-width="1" opacity="0.5"/>
+    <line x1="210" y1="205" x2="252" y2="208" stroke="#d4c89a" stroke-width="1" opacity="0.3"/>
+    <!-- Page shimmer -->
+    <ellipse class="page-shimmer" cx="240" cy="188" rx="28" ry="30" fill="#f5c86a"/>
+    <!-- Book shadow -->
+    <ellipse cx="200" cy="238" rx="82" ry="8" fill="#c8a040" opacity="0.12"/>
+  </g>
+
+  <!-- Stacked books -->
+  <g class="fade-in-2">
+    <rect x="108" y="234" width="185" height="14" rx="2" fill="#ec664b"/>
+    <rect x="108" y="234" width="6"   height="14" rx="1" fill="#c94a2e"/>
+    <rect x="112" y="222" width="176" height="13" rx="2" fill="#456841"/>
+    <rect x="112" y="222" width="6"   height="13" rx="1" fill="#2f4a2c"/>
+    <rect x="120" y="212" width="160" height="11" rx="2" fill="#d4a224"/>
+    <rect x="120" y="212" width="5"   height="11" rx="1" fill="#a87c10"/>
+  </g>
+
+  <!-- Bookmark ribbon -->
+  <g class="fade-in-3">
+    <polygon points="270,138 278,138 278,165 274,160 270,165" fill="#ec664b"/>
+  </g>
+
+  <!-- Sparks -->
+  <g class="fade-in-4">
+    <text class="spark-twinkle"   x="94"  y="150" font-size="18" fill="#f5c86a" font-family="serif" text-anchor="middle">✦</text>
+    <text class="spark-twinkle-b" x="298" y="142" font-size="13" fill="#ec664b" font-family="serif" text-anchor="middle">✦</text>
+    <text class="spark-twinkle"   x="108" y="240" font-size="10" fill="#456841" font-family="serif" text-anchor="middle">·</text>
+  </g>
+
+  <!-- M logo mark -->
+  <g class="fade-in-3">
+    <rect x="118" y="126" width="30" height="35" rx="3" fill="#ec664b" transform="rotate(-4,133,143)"/>
+    <text x="133" y="150" font-family="Georgia,serif" font-size="22" font-weight="700" fill="#fff" text-anchor="middle">M</text>
+  </g>
+
+  <!-- Main text -->
+  <g class="fade-in-5">
+    <text class="logo-title" x="330" y="178">Mayu&#x2019;s <tspan fill="#ec664b">Library</tspan></text>
+  </g>
+
+  <g class="fade-in-6">
+    <text class="logo-sub" x="332" y="204">FOR READERS, BY A READER</text>
+    <line x1="332" y1="212" x2="610" y2="212" stroke="#d4c090" stroke-width="0.75"/>
+    <text class="logo-tag" x="332" y="228">A safe digital library &#xB7; Since 2026</text>
+  </g>
+
+</svg>

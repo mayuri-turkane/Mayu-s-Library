@@ -1,0 +1,978 @@
+/* =========================================================
+   MAYU'S LIBRARY — COLORFUL BOOK DONATION PAGE
+========================================================= */
+
+.book-donation-page {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  color: #17231e;
+
+  background:
+    radial-gradient(circle at 8% 10%, #f7cfc2 0, transparent 22%),
+    radial-gradient(circle at 92% 12%, #d9e7cf 0, transparent 24%),
+    radial-gradient(circle at 85% 75%, #e7ddf4 0, transparent 25%),
+    linear-gradient(135deg, #fff8ec 0%, #f7f0df 48%, #f3eee4 100%);
+}
+
+
+/* =========================================================
+   COLORFUL BACKGROUND BLOBS
+========================================================= */
+
+.book-donation-page::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  left: -230px;
+  top: 350px;
+
+  border-radius: 50%;
+
+  background: #f5c7b8;
+
+  opacity: 0.45;
+
+  filter: blur(5px);
+
+  pointer-events: none;
+}
+
+.book-donation-page::after {
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  right: -190px;
+  top: 550px;
+
+  border-radius: 50%;
+
+  background: #d7e5cf;
+
+  opacity: 0.55;
+
+  filter: blur(3px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.book-donation-header {
+  position: relative;
+  z-index: 10;
+
+  width: min(1180px, calc(100% - 60px));
+
+  margin: 0 auto;
+
+  padding: 20px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(23, 35, 30, 0.1);
+}
+
+.book-back-link {
+  color: #536158;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.book-back-link:hover {
+  color: #ee654c;
+  transform: translateX(-3px);
+}
+
+.book-brand {
+  color: #17231e;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.book-brand strong {
+  color: #ee654c;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.book-donation-hero {
+  position: relative;
+  z-index: 2;
+
+  width: min(1100px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 70px 0 90px;
+
+  text-align: center;
+}
+
+
+/* decorative stars */
+
+.book-donation-hero::before {
+  content: "✦";
+
+  position: absolute;
+
+  top: 90px;
+  left: 8%;
+
+  color: #e7b84c;
+
+  font-size: 27px;
+
+  animation: bookStarFloat 3s ease-in-out infinite;
+}
+
+.book-donation-hero::after {
+  content: "✦";
+
+  position: absolute;
+
+  top: 180px;
+  right: 9%;
+
+  color: #ee654c;
+
+  font-size: 19px;
+
+  animation: bookStarFloat 4s ease-in-out infinite reverse;
+}
+
+@keyframes bookStarFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(12deg);
+  }
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.book-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 8px 15px;
+
+  border-radius: 999px;
+
+  background: #dcebd5;
+
+  color: #396747;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.15em;
+
+  box-shadow:
+    0 7px 18px rgba(57, 103, 71, 0.1);
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.book-donation-hero h1 {
+  margin: 22px 0 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(50px, 7vw, 82px);
+
+  line-height: 0.95;
+
+  letter-spacing: -0.055em;
+}
+
+.book-donation-hero h1 em {
+  display: inline-block;
+
+  color: #ee654c;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-weight: 500;
+
+  transform: rotate(-1deg);
+}
+
+.book-donation-hero > p {
+  max-width: 690px;
+
+  margin: 28px auto 0;
+
+  color: #59655c;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.book-donation-card {
+  position: relative;
+
+  width: min(760px, 100%);
+
+  margin: 48px auto 0;
+
+  padding: 38px;
+
+  text-align: left;
+
+  /*
+     IMPORTANT:
+     No pure white card.
+  */
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff4e8 0%,
+      #fff9ef 48%,
+      #f2f7ec 100%
+    );
+
+  border: 1px solid rgba(57, 103, 71, 0.13);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 35px 70px rgba(76, 61, 42, 0.13),
+    0 8px 20px rgba(23, 35, 30, 0.05);
+}
+
+
+/* colorful top border */
+
+.book-donation-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 9%;
+  right: 9%;
+
+  height: 5px;
+
+  border-radius: 0 0 12px 12px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ee654c 0%,
+      #e7b84c 35%,
+      #396747 68%,
+      #8171b8 100%
+    );
+}
+
+
+/* floating book icon */
+
+.book-donation-card::after {
+  content: "📚";
+
+  position: absolute;
+
+  top: 23px;
+  right: 28px;
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: #eadff4;
+
+  font-size: 22px;
+
+  transform: rotate(6deg);
+
+  box-shadow:
+    0 8px 18px rgba(86, 70, 120, 0.12);
+}
+
+
+/* =========================================================
+   FORM HEADER
+========================================================= */
+
+.book-form-header {
+  padding-bottom: 25px;
+
+  border-bottom: 1px solid rgba(23, 35, 30, 0.1);
+}
+
+.book-form-header span {
+  display: inline-flex;
+
+  padding: 7px 11px;
+
+  border-radius: 7px;
+
+  background: #f8dcd2;
+
+  color: #d95740;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+}
+
+.book-form-header h2 {
+  margin: 14px 0 7px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 32px;
+
+  letter-spacing: -0.03em;
+}
+
+.book-form-header p {
+  max-width: 560px;
+
+  margin: 0;
+
+  color: #6b756d;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.book-donation-form {
+  margin-top: 30px;
+}
+
+.form-section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 0 0 18px;
+
+  color: #17231e;
+
+  font-size: 15px;
+
+  font-weight: 900;
+}
+
+.form-section-title::before {
+  content: "";
+
+  width: 6px;
+  height: 20px;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      #ee654c,
+      #e7b84c
+    );
+}
+
+
+/* =========================================================
+   INPUT GRID
+========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.form-group {
+  margin-bottom: 4px;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #4e5a51;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.form-group label span {
+  color: #ee654c;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border: 1px solid rgba(57, 103, 71, 0.15);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  color: #17231e;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-group input,
+.form-group select {
+  height: 48px;
+}
+
+.form-group textarea {
+  min-height: 110px;
+
+  resize: vertical;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  background: #fffdf8;
+
+  border-color: rgba(57, 103, 71, 0.35);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: #fffdf8;
+
+  border-color: #396747;
+
+  box-shadow:
+    0 0 0 4px rgba(57, 103, 71, 0.1);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BOOK CONDITION
+========================================================= */
+
+.condition-options {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  margin-bottom: 28px;
+}
+
+.condition-option {
+  position: relative;
+}
+
+.condition-option input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.condition-option label {
+  min-height: 56px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 8px;
+
+  border: 1px solid rgba(57, 103, 71, 0.15);
+
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.7);
+
+  color: #5c675f;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.condition-option label:hover {
+  transform: translateY(-3px);
+
+  background: #fffdf8;
+
+  border-color: #396747;
+
+  box-shadow:
+    0 10px 22px rgba(23, 35, 30, 0.08);
+}
+
+
+/* New */
+
+.condition-option:nth-child(1) input:checked + label {
+  background: #f8dfd5;
+
+  border-color: #ee654c;
+
+  color: #b74735;
+
+  box-shadow:
+    0 8px 20px rgba(238, 101, 76, 0.14);
+}
+
+
+/* Good */
+
+.condition-option:nth-child(2) input:checked + label {
+  background: #dcebd5;
+
+  border-color: #396747;
+
+  color: #285535;
+
+  box-shadow:
+    0 8px 20px rgba(57, 103, 71, 0.14);
+}
+
+
+/* Used */
+
+.condition-option:nth-child(3) input:checked + label {
+  background: #e8def3;
+
+  border-color: #8171b8;
+
+  color: #63539a;
+
+  box-shadow:
+    0 8px 20px rgba(129, 113, 184, 0.14);
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.form-divider {
+  position: relative;
+
+  height: 1px;
+
+  margin: 34px 0;
+
+  background: rgba(23, 35, 30, 0.09);
+}
+
+.form-divider::after {
+  content: "✦";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  padding: 0 13px;
+
+  background: #fff6e9;
+
+  color: #e7b84c;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.book-submit-button {
+  width: 100%;
+
+  min-height: 56px;
+
+  margin-top: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ee654c 0%,
+      #ef7455 45%,
+      #396747 100%
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 28px rgba(57, 103, 71, 0.18),
+    0 7px 16px rgba(238, 101, 76, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.book-submit-button:hover {
+  transform: translateY(-3px);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 20px 35px rgba(57, 103, 71, 0.2);
+}
+
+.book-submit-button:active {
+  transform: translateY(-1px);
+}
+
+.book-submit-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   NOTE
+========================================================= */
+
+.book-form-note {
+  margin: 14px 0 0;
+
+  color: #7d877f;
+
+  font-size: 10px;
+
+  line-height: 1.6;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   TRUST CARDS
+========================================================= */
+
+.book-donation-trust {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(900px, calc(100% - 40px));
+
+  margin: 0 auto 90px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+}
+
+.book-trust-item {
+  padding: 26px 20px;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  border: 1px solid rgba(23, 35, 30, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* Peach */
+
+.book-trust-item:nth-child(1) {
+  background:
+    linear-gradient(
+      145deg,
+      #ffe3d8,
+      #f9cfc2
+    );
+
+  border-color: #f1b8a7;
+}
+
+
+/* Green */
+
+.book-trust-item:nth-child(2) {
+  background:
+    linear-gradient(
+      145deg,
+      #e5f0dc,
+      #cfe3c5
+    );
+
+  border-color: #bfd7b5;
+}
+
+
+/* Yellow */
+
+.book-trust-item:nth-child(3) {
+  background:
+    linear-gradient(
+      145deg,
+      #fff3ce,
+      #f4df9e
+    );
+
+  border-color: #e8d18c;
+}
+
+.book-trust-item:hover {
+  transform: translateY(-7px);
+
+  box-shadow:
+    0 18px 35px rgba(23, 35, 30, 0.1);
+}
+
+.book-trust-item span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 28px;
+}
+
+.book-trust-item strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #17231e;
+
+  font-size: 13px;
+}
+
+.book-trust-item small {
+  display: block;
+
+  color: #687269;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+  .book-donation-header {
+    width: calc(100% - 32px);
+  }
+
+  .book-donation-hero {
+    width: calc(100% - 28px);
+
+    padding-top: 55px;
+  }
+
+  .book-donation-hero::before,
+  .book-donation-hero::after {
+    display: none;
+  }
+
+  .book-donation-card {
+    padding: 27px;
+
+    margin-top: 38px;
+  }
+
+  .book-donation-card::after {
+    display: none;
+  }
+
+  .book-donation-trust {
+    grid-template-columns: 1fr;
+
+    width: calc(100% - 32px);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .book-donation-hero h1 {
+    font-size: 50px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: auto;
+  }
+
+  .condition-options {
+    grid-template-columns: 1fr;
+  }
+
+  .book-donation-card {
+    padding: 22px;
+
+    border-radius: 20px;
+  }
+
+  .book-form-header h2 {
+    font-size: 27px;
+  }
+}
+
+
+@media (max-width: 420px) {
+  .book-donation-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  .book-donation-hero h1 {
+    font-size: 43px;
+  }
+
+  .book-donation-hero > p {
+    font-size: 14px;
+  }
+}
