@@ -13,11 +13,16 @@ type DownloadBook = {
   cover?: string;
   coverUrl?: string;
   cover_i?: number;
+  isbn?: string;
   downloadUrl?: string;
   url?: string;
 };
 
 function getCoverUrl(book: DownloadBook) {
+  if (book.isbn) {
+    return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+  }
+
   if (book.coverUrl) return book.coverUrl;
   if (book.cover) return book.cover;
 

@@ -13,6 +13,7 @@ type SavedBook = {
   cover?: string;
   coverUrl?: string;
   cover_i?: number;
+  isbn?: string;
   genre?: string;
   first_publish_year?: number;
   year?: number;
@@ -21,6 +22,10 @@ type SavedBook = {
 };
 
 function getCoverUrl(book: SavedBook) {
+  if (book.isbn) {
+    return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+  }
+
   if (book.coverUrl) return book.coverUrl;
   if (book.cover) return book.cover;
 

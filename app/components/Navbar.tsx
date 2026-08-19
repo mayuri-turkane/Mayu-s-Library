@@ -37,6 +37,14 @@ function getSavedBookCount() {
   }
 }
 
+function getDownloadedBookCount() {
+  try {
+    return JSON.parse(localStorage.getItem("mayu-downloaded-books") || "[]").length;
+  } catch {
+    return 0;
+  }
+}
+
 export default function Navbar({
   searchValue,
   onSearchChange,
@@ -49,6 +57,7 @@ export default function Navbar({
   const [account, setAccount] = useState<Account | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
   const [savedBookCount, setSavedBookCount] = useState(0);
+  const [downloadedBookCount, setDownloadedBookCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -74,11 +83,18 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    const updateSavedBookCount = () => setSavedBookCount(getSavedBookCount());
+    const updateBookCounts = () => {
+      setSavedBookCount(getSavedBookCount());
+      setDownloadedBookCount(getDownloadedBookCount());
+    };
 
-    updateSavedBookCount();
-    window.addEventListener("storage", updateSavedBookCount);
-    return () => window.removeEventListener("storage", updateSavedBookCount);
+    updateBookCounts();
+    window.addEventListener("storage", updateBookCounts);
+    window.addEventListener("mayu-library-storage", updateBookCounts);
+    return () => {
+      window.removeEventListener("storage", updateBookCounts);
+      window.removeEventListener("mayu-library-storage", updateBookCounts);
+    };
   }, []);
 
   async function handleSignOut() {
@@ -132,6 +148,7 @@ export default function Navbar({
                 className="user-greeting"
                 onClick={() => {
                   setSavedBookCount(getSavedBookCount());
+                  setDownloadedBookCount(getDownloadedBookCount());
                   setAccountOpen((isOpen) => !isOpen);
                 }}
                 aria-expanded={accountOpen}
@@ -196,7 +213,7 @@ export default function Navbar({
 
   <div>
     <strong>Downloads</strong>
-    <small>No downloaded books yet</small>
+    <small>{downloadedBookCount} downloaded {downloadedBookCount === 1 ? "book" : "books"}</small>
   </div>
 </Link>
 

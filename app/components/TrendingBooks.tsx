@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   libraryBooks,
@@ -12,7 +12,7 @@ type CoverSource = "gutenberg" | "openLibrary";
 const getCoverUrl = (book: LibraryBook, source: CoverSource) =>
   source === "gutenberg" && book.gutenbergId
     ? `https://www.gutenberg.org/cache/epub/${book.gutenbergId}/pg${book.gutenbergId}.cover.medium.jpg`
-    : `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`;
+    : `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
 
 function BookCover({
   book,
@@ -24,7 +24,7 @@ function BookCover({
   className?: string;
 }) {
   const [source, setSource] = useState<CoverSource>(
-    book.gutenbergId ? "gutenberg" : "openLibrary"
+    "openLibrary"
   );
   const [hasCover, setHasCover] = useState(true);
 
@@ -43,8 +43,8 @@ function BookCover({
       alt={alt}
       className={className}
       onError={() => {
-        if (source === "gutenberg") {
-          setSource("openLibrary");
+        if (source === "openLibrary" && book.gutenbergId) {
+          setSource("gutenberg");
         } else {
           setHasCover(false);
         }
@@ -104,6 +104,22 @@ export default function TrendingBooks({
 
   const [activeBook, setActiveBook] =
     useState<LibraryBook | null>(null);
+  const [savedBookIds, setSavedBookIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("mayu-saved-books") || "[]");
+      setSavedBookIds(
+        Array.isArray(saved)
+          ? saved
+              .map((book: LibraryBook) => book.id)
+              .filter((id): id is string => typeof id === "string")
+          : []
+      );
+    } catch {
+      setSavedBookIds([]);
+    }
+  }, []);
 
   const normalizedQuery =
     query.trim().toLowerCase();
@@ -173,6 +189,19 @@ export default function TrendingBooks({
       ? `https://www.gutenberg.org/ebooks/${book.gutenbergId}`
       : `https://openlibrary.org/isbn/${book.isbn}`;
 
+  const getDownloadUrl = (book: LibraryBook) =>
+    book.gutenbergId
+      ? `https://www.gutenberg.org/cache/epub/${book.gutenbergId}/pg${book.gutenbergId}-images.pdf`
+      : null;
+
+  const getStoredBook = (book: LibraryBook) => ({
+    ...book,
+    coverUrl: getCoverUrl(book, "openLibrary"),
+    url: getBookLink(book),
+    readUrl: getBookLink(book),
+    downloadUrl: getDownloadUrl(book),
+  });
+
   const saveBook = (
     book: LibraryBook
   ) => {
@@ -193,9 +222,11 @@ export default function TrendingBooks({
           "mayu-saved-books",
           JSON.stringify([
             ...saved,
-            book,
+            getStoredBook(book),
           ])
         );
+        setSavedBookIds((ids) => [...ids, book.id]);
+        window.dispatchEvent(new Event("mayu-library-storage"));
       }
     } catch (error) {
       console.error(
@@ -203,6 +234,28 @@ export default function TrendingBooks({
         error
       );
     }
+  };
+
+  const downloadBook = (book: LibraryBook) => {
+    const downloadUrl = getDownloadUrl(book);
+    if (!downloadUrl) return;
+
+    try {
+      const downloaded = JSON.parse(localStorage.getItem("mayu-downloaded-books") || "[]");
+      const books = Array.isArray(downloaded) ? downloaded : [];
+
+      if (!books.some((item: LibraryBook) => item.id === book.id)) {
+        localStorage.setItem(
+          "mayu-downloaded-books",
+          JSON.stringify([...books, getStoredBook(book)])
+        );
+        window.dispatchEvent(new Event("mayu-library-storage"));
+      }
+    } catch (error) {
+      console.error("Unable to add book to downloads:", error);
+    }
+
+    window.open(downloadUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleGenreClick = (
@@ -357,6 +410,18 @@ export default function TrendingBooks({
                             : currentGenreName.toUpperCase()}
                         </span>
 
+                        {book.gutenbergId && (
+                          <button
+                            type="button"
+                            className="book-download-button"
+                            onClick={() => downloadBook(book)}
+                            aria-label={`Download ${book.title} as a PDF`}
+                            title="Download PDF"
+                          >
+                            ↓
+                          </button>
+                        )}
+
                         {/* HOVER ACTIONS */}
 
                         <div className="book-hover">
@@ -412,7 +477,7 @@ export default function TrendingBooks({
 
                         <button
                           type="button"
-                          className="save-book"
+                          className={`save-book ${savedBookIds.includes(book.id) ? "saved" : ""}`}
                           onClick={() =>
                             saveBook(
                               book

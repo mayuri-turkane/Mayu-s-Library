@@ -1065,6 +1065,35 @@ a {
   font-weight: 800;
 }
 
+.book-download-button {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(23, 35, 30, 0.1);
+  background: rgba(255, 253, 248, 0.96);
+  color: var(--olive);
+  box-shadow: 0 5px 12px rgba(23, 35, 30, 0.18);
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.book-download-button:hover,
+.book-download-button:focus-visible {
+  background: var(--olive);
+  color: white;
+  transform: translateY(-2px);
+}
+
 .book-hover {
   position: absolute;
   inset: 0;
@@ -1140,6 +1169,16 @@ a {
   color: var(--coral);
   font-size: 10px;
   cursor: pointer;
+}
+
+.save-book.saved {
+  color: var(--olive);
+  cursor: default;
+  font-weight: 700;
+}
+
+.save-book.saved::after {
+  content: " Saved";
 }
 
 .book-loading {
