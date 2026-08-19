@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./home.css";
+import ChatBot from "./components/ChatBot";
 
 export const metadata: Metadata = {
   title: "Mayu's Library | For Readers, By a Reader",
@@ -8,5 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" suppressHydrationWarning><body>{children}</body></html>;
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        {children}
+        <ChatBot />
+      </body>
+    </html>
+  );
 }
