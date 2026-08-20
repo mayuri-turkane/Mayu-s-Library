@@ -108,13 +108,30 @@ export default function Navbar({
         <Logo />
 
         <nav className={`main-nav ${menuOpen ? "mobile-open" : ""}`}>
-          <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-          <a href="#discover" onClick={() => setMenuOpen(false)}>Discover</a>
-          <a href="#genres" onClick={() => setMenuOpen(false)}>Genres</a>
-          <a href="#mood" onClick={() => setMenuOpen(false)}>Reading Mood</a>
-          <Link href="/about" onClick={() => setMenuOpen(false)}>About</Link>
-        </nav>
+  <Link href="/" onClick={() => setMenuOpen(false)}>
+    Home
+  </Link>
 
+  <a href="#discover" onClick={() => setMenuOpen(false)}>
+    Discover
+  </a>
+
+  <a href="#genres" onClick={() => setMenuOpen(false)}>
+    Genres
+  </a>
+
+  <a href="#mood" onClick={() => setMenuOpen(false)}>
+    Reading Mood
+  </a>
+
+  <Link href="/blogs" onClick={() => setMenuOpen(false)}>
+    Blogs
+  </Link>
+
+  <Link href="/about" onClick={() => setMenuOpen(false)}>
+    About
+  </Link>
+</nav>
         <div className="navbar-search">
           <span aria-hidden="true">⌕</span>
           <input
