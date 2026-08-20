@@ -7,13 +7,13 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import GenreSection from "./components/GenreSection";
 import TrendingBooks from "./components/TrendingBooks";
-import ReadingMood from "./components/ReadingMood";
+import BlogPreview from "./components/BlogPreview";
 import Footer from "./components/Footer";
 
 export default function Home() {
- const [query, setQuery] = useState("");
-const [searchQuery, setSearchQuery] = useState("");
-const [largeText, setLargeText] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [largeText, setLargeText] = useState(false);
 
   const performSearch = () => {
     setSearchQuery(query.trim());
@@ -40,30 +40,28 @@ const [largeText, setLargeText] = useState(false);
     }, 50);
   };
 
- return (
-  <main className={`page ${largeText ? "large-text" : ""}`}>
-     <Navbar
-  searchValue={query}
-  onSearchChange={setQuery}
-  onSearch={performSearch}
-  largeText={largeText}
-  onToggleLargeText={() => setLargeText((value) => !value)}
-/>
+  return (
+    <main className={`page ${largeText ? "large-text" : ""}`}>
+      <Navbar
+        searchValue={query}
+        onSearchChange={setQuery}
+        onSearch={performSearch}
+        largeText={largeText}
+        onToggleLargeText={() => setLargeText((value) => !value)}
+      />
+
       <Hero
         query={query}
         onQueryChange={setQuery}
         onSearch={performSearch}
       />
 
-      <GenreSection
-        onSelect={selectCategory}
-      />
+      <GenreSection onSelect={selectCategory} />
 
       <TrendingBooks query={searchQuery} />
 
-      <ReadingMood
-        onSelect={selectCategory}
-      />
+      {/* Sanity blog section */}
+      <BlogPreview />
 
       <Footer />
     </main>

@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../../lib/supabase";
 import "../auth.css";
 
 export default function SignInPage() {
@@ -12,22 +12,30 @@ export default function SignInPage() {
   async function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!supabase) {
-      return setMessage("Connect Supabase in .env.local to enable sign in.");
+    if (!isSupabaseConfigured) {
+      return setMessage("Sign in is not configured yet. Please try again shortly.");
     }
 
     const data = new FormData(event.currentTarget);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: String(data.get("email")),
-      password: String(data.get("password")),
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: String(data.get("email")),
+        password: String(data.get("password")),
+      });
 
-    if (error) {
-      setMessage(error.message);
-      return;
+      if (error) {
+        setMessage(
+          error.message === "Invalid login credentials"
+            ? "We could not find an account with that email and password. If sign-up previously failed, please create the account again first."
+            : error.message
+        );
+        return;
+      }
+
+      router.replace("/");
+    } catch {
+      setMessage("We could not reach the account service. Please try again in a moment.");
     }
-
-    router.replace("/");
   }
 
   return (

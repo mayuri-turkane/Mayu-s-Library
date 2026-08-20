@@ -42,6 +42,8 @@ function BookCover({
       src={getCoverUrl(book, source)}
       alt={alt}
       className={className}
+      width={500}
+      height={750}
       onError={() => {
         if (source === "openLibrary" && book.gutenbergId) {
           setSource("gutenberg");

@@ -52,41 +52,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${BASE_URL}/signin`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.5,
-    },
-    {
-      url: `${BASE_URL}/signup`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/shelf`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/history`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${BASE_URL}/profile`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${BASE_URL}/downloads`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
   ];
 }

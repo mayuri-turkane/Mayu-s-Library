@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../../lib/supabase";
 import "../auth.css";
 
 export default function SignUpPage() {
@@ -12,8 +12,8 @@ export default function SignUpPage() {
   async function signUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!supabase) {
-      return setMessage("Connect Supabase in .env.local to enable account creation.");
+    if (!isSupabaseConfigured) {
+      return setMessage("Account creation is not configured yet. Please try again shortly.");
     }
 
     const data = new FormData(event.currentTarget);
@@ -23,23 +23,27 @@ export default function SignUpPage() {
       return setMessage("Use at least 8 characters for your password.");
     }
 
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email: String(data.get("email")),
-      password,
-      options: { data: { display_name: String(data.get("name")) } },
-    });
+    try {
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email: String(data.get("email")),
+        password,
+        options: { data: { display_name: String(data.get("name")) } },
+      });
 
-    if (error) {
-      setMessage(error.message);
-      return;
+      if (error) {
+        setMessage(error.message);
+        return;
+      }
+
+      if (!signUpData.session) {
+        setMessage("Account created. Please confirm your email, then sign in.");
+        return;
+      }
+
+      router.replace("/");
+    } catch {
+      setMessage("We could not reach the account service. Please try again in a moment.");
     }
-
-    if (!signUpData.session) {
-      setMessage("Account created. Please confirm your email, then sign in.");
-      return;
-    }
-
-    router.replace("/");
   }
 
   return (

@@ -13,6 +13,8 @@ export default function Logo() {
         src="/mayus-library-logo.svg"
         alt="Mayu's Library"
         className="mayu-logo"
+        width={570}
+        height={150}
       />
     </Link>
   );

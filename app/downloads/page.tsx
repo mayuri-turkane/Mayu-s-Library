@@ -276,6 +276,8 @@ export default function DownloadsPage() {
                       <img
                         src={coverUrl}
                         alt={`${book.title ?? "Book"} cover`}
+                        width={500}
+                        height={750}
                       />
                     ) : (
                       <div className="download-placeholder">

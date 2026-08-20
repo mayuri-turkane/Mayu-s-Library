@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy, Safety & Community Rules | Mayu's Library",
+  title: "Privacy, Safety & Community Rules",
   description: "How we keep Mayu's Library safe, private, and welcoming for every reader.",
+  alternates: { canonical: "/safety" },
 };
 
 export default function SafetyPage() {
