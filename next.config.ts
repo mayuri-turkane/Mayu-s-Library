@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
+      {
+        protocol: "https",
+        hostname: "archive.org",
+      },
+      {
+        protocol: "https",
+        hostname: "*.archive.org",
+      },
     ],
   },
 
@@ -22,7 +30,7 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://covers.openlibrary.org https://www.gutenberg.org https://cdn.sanity.io; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://openlibrary.org https://covers.openlibrary.org https://api.razorpay.com https://*.sanity.io; frame-src https://checkout.razorpay.com; upgrade-insecure-requests",
+              "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://covers.openlibrary.org https://www.gutenberg.org https://cdn.sanity.io https://archive.org https://*.archive.org; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://openlibrary.org https://covers.openlibrary.org https://api.razorpay.com https://*.sanity.io; frame-src https://checkout.razorpay.com; upgrade-insecure-requests",
           },
           {
             key: "Referrer-Policy",
@@ -42,7 +50,8 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
+            value:
+              "max-age=63072000; includeSubDomains; preload",
           },
         ],
       },

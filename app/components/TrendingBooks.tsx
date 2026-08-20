@@ -9,12 +9,22 @@ import {
 import { supabase } from "../../lib/supabase";
 import BookReviews from "./BookReviews";
 
-type CoverSource = "gutenberg" | "openLibrary";
+type CoverSource = "openLibrary" | "gutenberg";
 
-const getCoverUrl = (book: LibraryBook, source: CoverSource) =>
-  source === "gutenberg" && book.gutenbergId
-    ? `https://www.gutenberg.org/cache/epub/${book.gutenbergId}/pg${book.gutenbergId}.cover.medium.jpg`
-    : `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+const getCoverUrl = (
+  book: LibraryBook,
+  source: CoverSource
+) => {
+  if (source === "gutenberg" && book.gutenbergId) {
+    return `https://www.gutenberg.org/cache/epub/${book.gutenbergId}/pg${book.gutenbergId}.cover.medium.jpg`;
+  }
+
+  if (source === "openLibrary" && book.isbn) {
+    return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+  }
+
+  return "";
+};
 
 function BookCover({
   book,
@@ -25,14 +35,20 @@ function BookCover({
   alt: string;
   className?: string;
 }) {
-  const [source, setSource] = useState<CoverSource>(
-    "openLibrary"
-  );
+  const [source, setSource] =
+    useState<CoverSource>("openLibrary");
+
   const [hasCover, setHasCover] = useState(true);
 
-  if (!hasCover) {
+  const imageUrl = getCoverUrl(book, source);
+
+  if (!hasCover || !imageUrl) {
     return (
-      <div className="book-no-cover" role="img" aria-label={alt}>
+      <div
+        className="book-no-cover"
+        role="img"
+        aria-label={alt}
+      >
         <span aria-hidden="true">📚</span>
         <small>{book.title}</small>
       </div>
@@ -41,22 +57,29 @@ function BookCover({
 
   return (
     <img
-      src={getCoverUrl(book, source)}
+      key={`${book.id}-${source}`}
+      src={imageUrl}
       alt={alt}
       className={className}
       width={500}
       height={750}
+      loading="lazy"
       onError={() => {
-        if (source === "openLibrary" && book.gutenbergId) {
+        if (
+          source === "openLibrary" &&
+          book.gutenbergId
+        ) {
           setSource("gutenberg");
-        } else {
-          setHasCover(false);
+          return;
         }
+
+        setHasCover(false);
       }}
     />
   );
-}
+};
 
+/* Book genres */
 const genres = [
   {
     name: "Adventure",
@@ -108,19 +131,42 @@ export default function TrendingBooks({
 
   const [activeBook, setActiveBook] =
     useState<LibraryBook | null>(null);
-  const [savedBookIds, setSavedBookIds] = useState<string[]>([]);
-const [bookRatings, setBookRatings] = useState<
-  Record<string, { average: number; count: number }>
->({});
+
+  const [savedBookIds, setSavedBookIds] =
+    useState<string[]>([]);
+
+  const [bookRatings, setBookRatings] =
+    useState<
+      Record<
+        string,
+        {
+          average: number;
+          count: number;
+        }
+      >
+    >({});
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem("mayu-saved-books") || "[]");
+      const saved = JSON.parse(
+        localStorage.getItem(
+          "mayu-saved-books"
+        ) || "[]"
+      );
+
       setSavedBookIds(
         Array.isArray(saved)
           ? saved
-              .map((book: LibraryBook) => book.id)
-              .filter((id): id is string => typeof id === "string")
+              .map(
+                (book: LibraryBook) =>
+                  book.id
+              )
+              .filter(
+                (
+                  id
+                ): id is string =>
+                  typeof id === "string"
+              )
           : []
       );
     } catch {
@@ -129,68 +175,86 @@ const [bookRatings, setBookRatings] = useState<
   }, []);
 
   const loadBookRatings = async () => {
-  const { data, error } = await supabase
-    .from("book_reviews")
-    .select("open_library_id, rating");
+    const { data, error } =
+      await supabase
+        .from("book_reviews")
+        .select(
+          "open_library_id, rating"
+        );
 
-  if (error) {
-    console.error("Unable to load book ratings:", error);
-    return;
-  }
-
-  const grouped: Record<
-    string,
-    { total: number; count: number }
-  > = {};
-
-  (data ?? []).forEach((review) => {
-    const id = review.open_library_id;
-
-    if (!grouped[id]) {
-      grouped[id] = {
-        total: 0,
-        count: 0,
-      };
+    if (error) {
+      console.error(
+        "Unable to load book ratings:",
+        error
+      );
+      return;
     }
 
-    grouped[id].total += review.rating;
-    grouped[id].count += 1;
-  });
+    const grouped: Record<
+      string,
+      {
+        total: number;
+        count: number;
+      }
+    > = {};
 
-  const ratings: Record<
-    string,
-    { average: number; count: number }
-  > = {};
+    (data ?? []).forEach(
+      (review) => {
+        const id =
+          review.open_library_id;
 
-  Object.entries(grouped).forEach(([id, value]) => {
-    ratings[id] = {
-      average: value.total / value.count,
-      count: value.count,
-    };
-  });
+        if (!grouped[id]) {
+          grouped[id] = {
+            total: 0,
+            count: 0,
+          };
+        }
 
-  setBookRatings(ratings);
-};
+        grouped[id].total +=
+          review.rating;
 
-useEffect(() => {
-  loadBookRatings();
-}, []);
+        grouped[id].count += 1;
+      }
+    );
+
+    const ratings: Record<
+      string,
+      {
+        average: number;
+        count: number;
+      }
+    > = {};
+
+    Object.entries(grouped).forEach(
+      ([id, value]) => {
+        ratings[id] = {
+          average:
+            value.total /
+            value.count,
+          count: value.count,
+        };
+      }
+    );
+
+    setBookRatings(ratings);
+  };
+
+  useEffect(() => {
+    loadBookRatings();
+  }, []);
 
   const normalizedQuery =
     query.trim().toLowerCase();
 
   const matchingGenre = genres.find(
     (genre) =>
-      genre.query === normalizedQuery ||
+      genre.query ===
+        normalizedQuery ||
       genre.name.toLowerCase() ===
         normalizedQuery
   );
 
   const displayedBooks = useMemo(() => {
-    /*
-     * If the search is exactly a genre,
-     * show that genre.
-     */
     if (matchingGenre) {
       return libraryBooks.filter(
         (book) =>
@@ -199,10 +263,6 @@ useEffect(() => {
       );
     }
 
-    /*
-     * Normal search:
-     * search title, author and genre.
-     */
     if (normalizedQuery) {
       return libraryBooks.filter(
         (book) =>
@@ -218,9 +278,6 @@ useEffect(() => {
       );
     }
 
-    /*
-     * Default homepage shelf.
-     */
     return libraryBooks.filter(
       (book) =>
         book.genre === activeGenre
@@ -239,22 +296,32 @@ useEffect(() => {
     )?.name ??
     "Adventure";
 
-  const getBookLink = (book: LibraryBook) =>
+  const getBookLink = (
+    book: LibraryBook
+  ) =>
     book.gutenbergId
       ? `https://www.gutenberg.org/ebooks/${book.gutenbergId}`
       : `https://openlibrary.org/isbn/${book.isbn}`;
 
-  const getDownloadUrl = (book: LibraryBook) =>
+  const getDownloadUrl = (
+    book: LibraryBook
+  ) =>
     book.gutenbergId
       ? `https://www.gutenberg.org/cache/epub/${book.gutenbergId}/pg${book.gutenbergId}-images.pdf`
       : null;
 
-  const getStoredBook = (book: LibraryBook) => ({
+  const getStoredBook = (
+    book: LibraryBook
+  ) => ({
     ...book,
-    coverUrl: getCoverUrl(book, "openLibrary"),
+    coverUrl: getCoverUrl(
+      book,
+      "openLibrary"
+    ),
     url: getBookLink(book),
     readUrl: getBookLink(book),
-    downloadUrl: getDownloadUrl(book),
+    downloadUrl:
+      getDownloadUrl(book),
   });
 
   const saveBook = (
@@ -280,8 +347,17 @@ useEffect(() => {
             getStoredBook(book),
           ])
         );
-        setSavedBookIds((ids) => [...ids, book.id]);
-        window.dispatchEvent(new Event("mayu-library-storage"));
+
+        setSavedBookIds((ids) => [
+          ...ids,
+          book.id,
+        ]);
+
+        window.dispatchEvent(
+          new Event(
+            "mayu-library-storage"
+          )
+        );
       }
     } catch (error) {
       console.error(
@@ -291,26 +367,60 @@ useEffect(() => {
     }
   };
 
-  const downloadBook = (book: LibraryBook) => {
-    const downloadUrl = getDownloadUrl(book);
+  const downloadBook = (
+    book: LibraryBook
+  ) => {
+    const downloadUrl =
+      getDownloadUrl(book);
+
     if (!downloadUrl) return;
 
     try {
-      const downloaded = JSON.parse(localStorage.getItem("mayu-downloaded-books") || "[]");
-      const books = Array.isArray(downloaded) ? downloaded : [];
+      const downloaded =
+        JSON.parse(
+          localStorage.getItem(
+            "mayu-downloaded-books"
+          ) || "[]"
+        );
 
-      if (!books.some((item: LibraryBook) => item.id === book.id)) {
+      const books = Array.isArray(
+        downloaded
+      )
+        ? downloaded
+        : [];
+
+      if (
+        !books.some(
+          (item: LibraryBook) =>
+            item.id === book.id
+        )
+      ) {
         localStorage.setItem(
           "mayu-downloaded-books",
-          JSON.stringify([...books, getStoredBook(book)])
+          JSON.stringify([
+            ...books,
+            getStoredBook(book),
+          ])
         );
-        window.dispatchEvent(new Event("mayu-library-storage"));
+
+        window.dispatchEvent(
+          new Event(
+            "mayu-library-storage"
+          )
+        );
       }
     } catch (error) {
-      console.error("Unable to add book to downloads:", error);
+      console.error(
+        "Unable to add book to downloads:",
+        error
+      );
     }
 
-    window.open(downloadUrl, "_blank", "noopener,noreferrer");
+    window.open(
+      downloadUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   const handleGenreClick = (
@@ -325,10 +435,6 @@ useEffect(() => {
       id="discover"
     >
       <div className="section-container">
-
-        {/* =========================
-            SECTION HEADER
-        ========================== */}
 
         <div className="section-heading">
           <div>
@@ -353,13 +459,9 @@ useEffect(() => {
             rel="noreferrer"
             className="view-all"
           >
-            Explore Project Gutenberg ↗
+            Explore Project Gutenberg →
           </a>
         </div>
-
-        {/* =========================
-            GENRE BUTTONS
-        ========================== */}
 
         {(!normalizedQuery ||
           matchingGenre) && (
@@ -400,14 +502,8 @@ useEffect(() => {
           </div>
         )}
 
-        {/* =========================
-            BOOK GRID
-        ========================== */}
-
         <AnimatePresence mode="wait">
-
           {displayedBooks.length > 0 ? (
-
             <motion.div
               key={`${activeGenre}-${normalizedQuery}`}
               className="book-grid-modern"
@@ -423,12 +519,10 @@ useEffect(() => {
                 duration: 0.35,
               }}
             >
-
               {displayedBooks
                 .slice(0, 6)
                 .map(
                   (book, index) => (
-
                     <motion.article
                       className="modern-book-card"
                       key={book.id}
@@ -448,11 +542,7 @@ useEffect(() => {
                         y: -8,
                       }}
                     >
-
-                      {/* COVER */}
-
                       <div className="book-cover-wrap">
-
                         <BookCover
                           book={book}
                           alt={`${book.title} cover`}
@@ -469,7 +559,11 @@ useEffect(() => {
                           <button
                             type="button"
                             className="book-download-button"
-                            onClick={() => downloadBook(book)}
+                            onClick={() =>
+                              downloadBook(
+                                book
+                              )
+                            }
                             aria-label={`Download ${book.title} as a PDF`}
                             title="Download PDF"
                           >
@@ -477,10 +571,7 @@ useEffect(() => {
                           </button>
                         )}
 
-                        {/* HOVER ACTIONS */}
-
                         <div className="book-hover">
-
                           <button
                             type="button"
                             onClick={() =>
@@ -493,87 +584,116 @@ useEffect(() => {
                           </button>
 
                           <a
-                            href={getBookLink(book)}
+                            href={getBookLink(
+                              book
+                            )}
                             target="_blank"
                             rel="noreferrer"
                           >
-                            View book ↗
+                            View book →
                           </a>
-
                         </div>
-
                       </div>
 
-                      {/* BOOK INFORMATION */}
-
                       <div className="book-information">
-
                         <span className="book-category">
                           {book.genre}
                         </span>
 
-                        <h3>{book.title}</h3>
+                        <h3>
+                          {book.title}
+                        </h3>
 
-<p>{book.author}</p>
+                        <p>
+                          {book.author}
+                        </p>
 
-{bookRatings[book.id] ? (
-  <div className="book-card-rating">
-    <span>★</span>
-    <strong>
-      {bookRatings[book.id].average.toFixed(1)}
-    </strong>
-    <small>
-      ({bookRatings[book.id].count}{" "}
-      {bookRatings[book.id].count === 1
-        ? "review"
-        : "reviews"})
-    </small>
-  </div>
-) : (
-  <button
-  type="button"
-  className="book-card-rating no-rating"
-  onClick={() => setActiveBook(book)}
->
-  <span>☆</span>
-  <small>Be the first to review</small>
-</button>
-)}
+                        {bookRatings[
+                          book.id
+                        ] ? (
+                          <div className="book-card-rating">
+                            <span>
+                              ★
+                            </span>
+
+                            <strong>
+                              {bookRatings[
+                                book.id
+                              ].average.toFixed(
+                                1
+                              )}
+                            </strong>
+
+                            <small>
+                              (
+                              {
+                                bookRatings[
+                                  book.id
+                                ].count
+                              }{" "}
+                              {bookRatings[
+                                book.id
+                              ].count ===
+                              1
+                                ? "review"
+                                : "reviews"}
+                              )
+                            </small>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            className="book-card-rating no-rating"
+                            onClick={() =>
+                              setActiveBook(
+                                book
+                              )
+                            }
+                          >
+                            <span>
+                              ☆
+                            </span>
+
+                            <small>
+                              Be the first to
+                              review
+                            </small>
+                          </button>
+                        )}
+
                         <div className="book-meta">
                           <span>
                             {book.year}
                           </span>
 
                           <span>
-                            {currentGenreName}
+                            {
+                              currentGenreName
+                            }
                           </span>
                         </div>
 
                         <button
                           type="button"
-                          className={`save-book ${savedBookIds.includes(book.id) ? "saved" : ""}`}
-                          onClick={() =>
-                            saveBook(
-                              book
+                          className={`save-book ${
+                            savedBookIds.includes(
+                              book.id
                             )
+                              ? "saved"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            saveBook(book)
                           }
                         >
                           ♡ Save to shelf
                         </button>
-
                       </div>
-
                     </motion.article>
-
                   )
                 )}
-
             </motion.div>
-
           ) : (
-
-            /* EMPTY SEARCH */
-
             <motion.div
               key="empty"
               className="empty-books"
@@ -584,10 +704,7 @@ useEffect(() => {
                 opacity: 1,
               }}
             >
-
-              <span>
-                📚
-              </span>
+              <span>📚</span>
 
               <h3>
                 No books found
@@ -609,28 +726,18 @@ useEffect(() => {
               >
                 Browse Adventure →
               </button>
-
             </motion.div>
-
           )}
-
         </AnimatePresence>
-
       </div>
 
-      {/* =========================
-          QUICK VIEW MODAL
-      ========================== */}
-
       {activeBook && (
-
         <div
           className="book-modal-backdrop"
           onClick={() =>
             setActiveBook(null)
           }
         >
-
           <motion.div
             className="book-modal"
             initial={{
@@ -645,7 +752,6 @@ useEffect(() => {
               event.stopPropagation()
             }
           >
-
             <button
               type="button"
               className="modal-close"
@@ -657,10 +763,12 @@ useEffect(() => {
               ×
             </button>
 
-            <BookCover book={activeBook} alt={activeBook.title} />
+            <BookCover
+              book={activeBook}
+              alt={activeBook.title}
+            />
 
             <div>
-
               <span className="eyebrow">
                 {activeBook.genre.toUpperCase()}
               </span>
@@ -670,8 +778,7 @@ useEffect(() => {
               </h2>
 
               <p>
-                By{" "}
-                {activeBook.author}
+                By {activeBook.author}
               </p>
 
               <p>
@@ -685,26 +792,25 @@ useEffect(() => {
 
               <a
                 className="modal-button"
-                href={getBookLink(activeBook)}
+                href={getBookLink(
+                  activeBook
+                )}
                 target="_blank"
                 rel="noreferrer"
               >
                 Explore this book →
               </a>
 
-<BookReviews
-  bookId={activeBook.id}
-  onReviewChange={loadBookRatings}
-/>
-
+              <BookReviews
+                bookId={activeBook.id}
+                onReviewChange={
+                  loadBookRatings
+                }
+              />
             </div>
-
           </motion.div>
-
         </div>
-
       )}
-
     </section>
   );
 }
