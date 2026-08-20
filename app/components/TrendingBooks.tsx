@@ -6,6 +6,8 @@ import {
   libraryBooks,
   type LibraryBook,
 } from "../../lib/books";
+import { supabase } from "../../lib/supabase";
+import BookReviews from "./BookReviews";
 
 type CoverSource = "gutenberg" | "openLibrary";
 
@@ -107,6 +109,9 @@ export default function TrendingBooks({
   const [activeBook, setActiveBook] =
     useState<LibraryBook | null>(null);
   const [savedBookIds, setSavedBookIds] = useState<string[]>([]);
+const [bookRatings, setBookRatings] = useState<
+  Record<string, { average: number; count: number }>
+>({});
 
   useEffect(() => {
     try {
@@ -122,6 +127,54 @@ export default function TrendingBooks({
       setSavedBookIds([]);
     }
   }, []);
+
+  const loadBookRatings = async () => {
+  const { data, error } = await supabase
+    .from("book_reviews")
+    .select("open_library_id, rating");
+
+  if (error) {
+    console.error("Unable to load book ratings:", error);
+    return;
+  }
+
+  const grouped: Record<
+    string,
+    { total: number; count: number }
+  > = {};
+
+  (data ?? []).forEach((review) => {
+    const id = review.open_library_id;
+
+    if (!grouped[id]) {
+      grouped[id] = {
+        total: 0,
+        count: 0,
+      };
+    }
+
+    grouped[id].total += review.rating;
+    grouped[id].count += 1;
+  });
+
+  const ratings: Record<
+    string,
+    { average: number; count: number }
+  > = {};
+
+  Object.entries(grouped).forEach(([id, value]) => {
+    ratings[id] = {
+      average: value.total / value.count,
+      count: value.count,
+    };
+  });
+
+  setBookRatings(ratings);
+};
+
+useEffect(() => {
+  loadBookRatings();
+}, []);
 
   const normalizedQuery =
     query.trim().toLowerCase();
@@ -459,14 +512,33 @@ export default function TrendingBooks({
                           {book.genre}
                         </span>
 
-                        <h3>
-                          {book.title}
-                        </h3>
+                        <h3>{book.title}</h3>
 
-                        <p>
-                          {book.author}
-                        </p>
+<p>{book.author}</p>
 
+{bookRatings[book.id] ? (
+  <div className="book-card-rating">
+    <span>★</span>
+    <strong>
+      {bookRatings[book.id].average.toFixed(1)}
+    </strong>
+    <small>
+      ({bookRatings[book.id].count}{" "}
+      {bookRatings[book.id].count === 1
+        ? "review"
+        : "reviews"})
+    </small>
+  </div>
+) : (
+  <button
+  type="button"
+  className="book-card-rating no-rating"
+  onClick={() => setActiveBook(book)}
+>
+  <span>☆</span>
+  <small>Be the first to review</small>
+</button>
+)}
                         <div className="book-meta">
                           <span>
                             {book.year}
@@ -619,6 +691,11 @@ export default function TrendingBooks({
               >
                 Explore this book →
               </a>
+
+<BookReviews
+  bookId={activeBook.id}
+  onReviewChange={loadBookRatings}
+/>
 
             </div>
 
