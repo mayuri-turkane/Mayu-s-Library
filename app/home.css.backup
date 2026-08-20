@@ -77,6 +77,13 @@ a {
   gap: 20px;
 }
 
+/* =========================
+   MAYU'S LIBRARY LOGO
+========================= */
+/* =========================
+   MAYU'S LIBRARY LOGO
+========================= */
+
 .mayu-logo-link {
   width: 270px;
   height: 72px;
@@ -89,6 +96,7 @@ a {
 
   text-decoration: none;
 
+  /* IMPORTANT: don't clip the SVG */
   overflow: visible;
 }
 
@@ -948,6 +956,10 @@ a {
    TRENDING
 ========================= */
 
+/* =========================
+   TRENDING GENRE TABS
+========================= */
+
 .trending-genres {
   display: flex;
   gap: 10px;
@@ -1240,8 +1252,6 @@ a {
   position: relative;
   max-width: 650px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
   display: grid;
   grid-template-columns: 190px 1fr;
   gap: 30px;
@@ -1741,10 +1751,10 @@ a {
   }
 
   .genre-grid,
-  .book-grid-modern,
-  .book-loading {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+.book-grid-modern,
+.book-loading {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 
   .book-cover-wrap {
     height: 260px;
@@ -1770,17 +1780,14 @@ a {
 
   .book-modal {
     grid-template-columns: 1fr;
-    max-height: 92vh;
-    margin: 12px;
   }
 
   .book-modal img {
     width: 150px;
     height: 220px;
   }
-}
 
-/* =========================
+  /* =========================
    BOOK ERROR / NO COVER
 ========================= */
 
@@ -1828,8 +1835,7 @@ a {
   box-shadow:
     0 8px 18px rgba(57, 103, 71, 0.2);
 }
-
-/* =========================
+ /* =========================
    DONATE BOX
 ========================= */
 .donate-box {
@@ -2002,7 +2008,7 @@ a {
 }
 
 .donate-stat span {
-  display: block;
+  display: block; 
   font-size: 10px;
   color: #6f776f;
   margin-top: 4px;
@@ -2197,6 +2203,8 @@ a {
   z-index: 1;
 }
 
+/* Heading */
+
 .modern-blog-heading {
   display: flex;
   align-items: flex-end;
@@ -2268,6 +2276,8 @@ a {
 .modern-blog-view-all:hover .modern-blog-arrow {
   transform: translate(3px, -3px);
 }
+
+/* Featured */
 
 .modern-blog-featured {
   margin-bottom: 26px;
@@ -2400,6 +2410,8 @@ a {
   transform: translateX(5px);
 }
 
+/* Grid */
+
 .modern-blog-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2512,6 +2524,8 @@ a {
   color: #52705d;
 }
 
+/* Responsive */
+
 @media (max-width: 950px) {
   .modern-featured-card {
     grid-template-columns: 1fr;
@@ -2558,6 +2572,8 @@ a {
   }
 }
 
+/* Blog loading animation */
+
 .blog-loading-line {
   height: 12px;
   width: 85%;
@@ -2594,6 +2610,11 @@ a {
 /* =========================================
    BOOK REVIEWS
 ========================================= */
+
+.book-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
 .book-reviews {
   margin-top: 36px;
@@ -2636,6 +2657,8 @@ a {
   margin-top: 4px;
   color: #68736b;
 }
+
+/* Review form */
 
 .review-form {
   padding: 22px;
@@ -2723,6 +2746,8 @@ a {
   font-size: 13px;
 }
 
+/* Individual reviews */
+
 .reviews-list {
   display: grid;
   gap: 12px;
@@ -2785,6 +2810,8 @@ a {
   font-size: 13px;
 }
 
+/* Mobile */
+
 @media (max-width: 700px) {
   .book-reviews-heading {
     flex-direction: column;
@@ -2792,6 +2819,11 @@ a {
 
   .book-rating-summary {
     text-align: left;
+  }
+
+  .book-modal {
+    max-height: 92vh;
+    margin: 12px;
   }
 }
 
@@ -2819,4 +2851,6 @@ a {
 
 .book-card-rating.no-rating {
   opacity: 0.7;
+}
+
 }
