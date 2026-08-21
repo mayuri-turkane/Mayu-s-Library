@@ -117,7 +117,7 @@ export default function BlogsPage() {
                         </span>
                       )}
 
-                      <h2>{blog.title}</h2>
+                      <h3>{blog.title}</h3>
 
                       {blog.excerpt && <p>{blog.excerpt}</p>}
 
